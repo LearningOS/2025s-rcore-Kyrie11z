@@ -17,6 +17,11 @@ pub fn print(args: fmt::Arguments) {
     Stdout.write_fmt(args).unwrap();
 }
 
+// os/src/console.rs
+pub fn print_color(args: fmt::Arguments, color_code: u32) {
+    print(format_args!("\x1B[{}m{}\x1B[0m", color_code, args));
+}
+
 /// Print! to the host console using the format string and arguments.
 #[macro_export]
 macro_rules! print {

@@ -36,6 +36,7 @@ pub fn clear_bss() {
     (sbss as usize..ebss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) });
 }
 
+
 /// the rust entry-point of os
 #[no_mangle]
 pub fn rust_main() -> ! {
@@ -52,8 +53,9 @@ pub fn rust_main() -> ! {
         fn boot_stack_top(); // stack top
     }
     clear_bss();
+    
+    // println!("[kernel] Hello, world!");
     logging::init();
-    println!("[kernel] Hello, world!");
     trace!(
         "[kernel] .text [{:#x}, {:#x})",
         stext as usize,
@@ -63,10 +65,12 @@ pub fn rust_main() -> ! {
         "[kernel] .rodata [{:#x}, {:#x})",
         srodata as usize, erodata as usize
     );
+    log::info!("[kernel] direct call info test");
     info!(
         "[kernel] .data [{:#x}, {:#x})",
         sdata as usize, edata as usize
     );
+    // info!("Current log level: {:?}", log::max_level());
     warn!(
         "[kernel] boot_stack top=bottom={:#x}, lower_bound={:#x}",
         boot_stack_top as usize, boot_stack_lower_bound as usize
